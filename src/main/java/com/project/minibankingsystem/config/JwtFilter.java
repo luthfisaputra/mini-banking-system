@@ -25,7 +25,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if (path.startsWith("/auth")) {
+        if (path != null && path.contains("/auth")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -35,13 +35,18 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
-            if (jwtUtil.validateToken(token)) {
+            try {
+                if (jwtUtil.validateToken(token)) {
                 String username = jwtUtil.extractUsername(token);
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(username, null, null);
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid Token: " + e.getMessage());
             }
+
         }
 
         filterChain.doFilter(request, response);

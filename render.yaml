@@ -3,7 +3,7 @@ services:
     name: mini-banking-system
     env: java
     region: singapore
-    buildCommand: "./mvnw clean package -DskipTests"
+    buildCommand: "mvnw clean package -DskipTests"
     startCommand: "java -jar target/*.jar"
     envVars:
       - key: JAVA_VERSION

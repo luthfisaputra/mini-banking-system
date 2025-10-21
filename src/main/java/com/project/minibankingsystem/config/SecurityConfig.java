@@ -17,10 +17,11 @@ public class SecurityConfig {
      public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // login bebas
+                .requestMatchers("/", "/auth/**").permitAll() // login bebas
                 .anyRequest().authenticated() // lainnya butuh token
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            
 
         return http.build();
     }

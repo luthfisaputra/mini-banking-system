@@ -25,7 +25,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        // 🛑 Skip filter untuk endpoint auth biar bisa login tanpa token
         if (path.startsWith("/auth")) {
             filterChain.doFilter(request, response);
             return;

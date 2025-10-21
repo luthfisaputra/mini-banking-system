@@ -12,10 +12,10 @@ public class AuthController {
     private JwtUtil jwtUtil;
     
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
+    public String login(@RequestBody LoginRequest request) {
         // untuk demo: hardcode user
-        if ("luthfi".equals(username) && "1234".equals(password)) {
-            return jwtUtil.generateToken(username);
+        if ("luthfi".equals(request.getUsername()) && "1234".equals(request.getPassword())) {
+            return jwtUtil.generateToken(request.getUsername());
         } else {
             throw new RuntimeException("Username atau password salah");
         }

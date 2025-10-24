@@ -115,4 +115,8 @@ public class BankService {
         toTrans.setAccount(toAcc);
         transactionRepo.save(toTrans);
     }
+
+    public List<Transaction> getTransactionsByDate(Long accountId, LocalDateTime from, LocalDateTime to) {
+        return transactionRepo.findByAccountIdAndTimestampBetween(accountId, from, to);
+    }
 }

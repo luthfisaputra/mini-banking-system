@@ -17,15 +17,14 @@ public class SecurityConfig {
     private JwtFilter jwtFilter;
 
     @Bean
-     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/auth/**").permitAll() // login bebas
-                .anyRequest().authenticated() // lainnya butuh token
-            )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-            
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

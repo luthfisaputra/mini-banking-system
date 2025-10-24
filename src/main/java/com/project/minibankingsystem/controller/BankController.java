@@ -6,6 +6,7 @@ import com.project.minibankingsystem.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,5 +69,19 @@ public class BankController
     public List<Transaction> getTransactions(@PathVariable Long Id) 
     {
         return bankService.getTransactions(Id);
+    }
+
+    @GetMapping("/{Id}/transactions/filter")
+    public List<Transaction> geTransactionsByDate
+    (
+        @PathVariable Long Id,
+        @RequestParam String from,
+        @RequestParam String to
+    ) 
+    {
+        LocalDateTime fromDate = LocalDateTime.parse(from);
+        LocalDateTime toDate = LocalDateTime.parse(to);
+
+        return bankService.getTransactionsByDate(Id, fromDate, toDate); 
     }
 }

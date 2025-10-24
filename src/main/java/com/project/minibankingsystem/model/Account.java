@@ -20,4 +20,8 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transaction> transactions;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

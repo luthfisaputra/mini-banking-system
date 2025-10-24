@@ -18,23 +18,23 @@ public class JwtUtil {
     }
 
     // Generate token
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date())
+                .claim("role", role)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey())
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     // Extract username from token
-    public String extractUsername(String token) {
+    public String extractRole(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .get("role", String.class);
     }
 
     // Validate token
@@ -49,4 +49,6 @@ public class JwtUtil {
             return false;
         }
     }
+
+
 }

@@ -1,1 +1,1 @@
-# mini-banking-system
+# Mini Banking System
